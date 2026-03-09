@@ -1,14 +1,9 @@
 package com.githubapiserver;
 
-import com.githubapiserver.GitHubApiService.GitHubApiService;
-import com.githubapiserver.results.GitHubReposApiResults;
+import com.githubapiserver.github.service.GitHubApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.event.ApplicationStartedEvent;
-import org.springframework.context.event.EventListener;
-
-import java.util.List;
 
 @SpringBootApplication
 public class GitHubApiServerApplication {
@@ -20,11 +15,11 @@ public class GitHubApiServerApplication {
         SpringApplication.run(GitHubApiServerApplication.class, args);
     }
 
-    @EventListener(ApplicationStartedEvent.class)
+/*    @EventListener(ApplicationStartedEvent.class)
     public void makeQueryRequest() {
-        List<GitHubReposApiResults> requestToExternalApi = gitHubApiService.getGitHubApiResults("adamropiak");
+        List<GitHubRepositoryResults> requestToExternalApi = gitHubApiService.getGitHubApiResults("adamropiak");
         System.out.println(requestToExternalApi);
 
-    }
+    }*/
 
 }
