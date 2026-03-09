@@ -15,11 +15,5 @@ public class GitHubApiServerApplication {
         SpringApplication.run(GitHubApiServerApplication.class, args);
     }
 
-/*    @EventListener(ApplicationStartedEvent.class)
-    public void makeQueryRequest() {
-        List<GitHubRepositoryResults> requestToExternalApi = gitHubApiService.getGitHubApiResults("adamropiak");
-        System.out.println(requestToExternalApi);
-
-    }*/
 
 }
