@@ -5,13 +5,10 @@ import com.githubapiserver.github.service.GitHubApiService;
 import com.githubapiserver.localdbgithub.domain.model.LocalRepoEntity;
 import com.githubapiserver.localdbgithub.domain.service.*;
 import com.githubapiserver.localdbgithub.infrastructure.dto.request.CreateLocalRepoRequestDto;
-import com.githubapiserver.localdbgithub.infrastructure.dto.request.CreateLocalRepoResponseDto;
+import com.githubapiserver.localdbgithub.infrastructure.dto.response.CreateLocalRepoResponseDto;
 import com.githubapiserver.localdbgithub.infrastructure.dto.request.PatchLocalRepoRequestDto;
 import com.githubapiserver.localdbgithub.infrastructure.dto.request.PutLocalRepoRequestDto;
-import com.githubapiserver.localdbgithub.infrastructure.dto.response.DeleteLocalRepoResponseDto;
-import com.githubapiserver.localdbgithub.infrastructure.dto.response.GetAllLocalReposResponseDto;
-import com.githubapiserver.localdbgithub.infrastructure.dto.response.PatchLocalRepoResponseDto;
-import com.githubapiserver.localdbgithub.infrastructure.dto.response.PutLocalRepoResponseDto;
+import com.githubapiserver.localdbgithub.infrastructure.dto.response.*;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -32,7 +29,6 @@ public class GitHubLocalRepoRestController {
     private final LocalRepoRetriever localRepoRetriever;
     private final LocalRepoUpdater localRepoUpdater;
     private final GitHubApiService gitHubApiService;
-    private final SaveGitHubToLocalDb saveGitHubToLocalDb;
 
     @GetMapping
     public ResponseEntity<GetAllLocalReposResponseDto> findAllRepos(@PageableDefault(page = 0, size = 10) Pageable pageable){
@@ -42,12 +38,10 @@ public class GitHubLocalRepoRestController {
     }
 
     @GetMapping("/{userName}")
-    public ResponseEntity<GetAllLocalReposResponseDto> findReposByUserName(@PathVariable String userName){
-        //List<GitHubRepositoryResults> repos = gitHubApiService.getGitHubApiResults(userName);
-        //GetAllLocalReposResponseDto response = saveGitHubToLocalDb.syncRepos(userName, repos);
-        List<LocalRepoEntity> getLocalRepoByUserName = localRepoRetriever.findLocalRepoByUserName(userName);
-        GetAllLocalReposResponseDto response = LocalReposMapper.mapFromRepoEntityToGetAllLocalReposResponseDto(getLocalRepoByUserName);
-
+    public ResponseEntity<GetGithubRepoList> findReposByUserName(@PathVariable String userName){
+        List<GitHubRepositoryResults> repos = gitHubApiService.getGitHubApiResults(userName);
+        GetGithubRepoList response = LocalReposMapper.mapFromGitHubReultsToDto(repos);
+        localRepoAdder.saveGitHubReposToLocalDb(response.repoList());
         return ResponseEntity.ok(response);
     }
 

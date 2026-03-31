@@ -1,4 +1,4 @@
 package com.githubapiserver.localdbgithub.infrastructure.dto.response;
 
-public record PatchLocalRepoResponseDto(ReposDto updatedRepo) {
+public record CreateLocalRepoResponseDto (ReposDto repo) {
 }
